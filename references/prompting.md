@@ -4,6 +4,12 @@ El reto de generar cada slide como **imagen completa** es: (a) que el texto salg
 correcto y legible, y (b) que todas las slides compartan la misma identidad
 visual. Estas dos técnicas lo resuelven.
 
+> **Idioma:** la skill funciona en **cualquier idioma**. Decide el idioma del deck
+> en el paso 1 (por defecto, el idioma en que escribe el usuario), fíjalo en el
+> bloque de estilo y **reitéralo en cada prompt** indicando "ortografía perfecta
+> en <ese idioma>" — eso es lo que hace que el modelo escriba el texto sin
+> faltas. Los ejemplos de abajo usan español, pero sustituye el idioma según el caso.
+
 ## 1. El "bloque de estilo" (style block)
 Tras aprobar el sistema de diseño, destila su descripción en un bloque de texto
 reutilizable que se antepone a CADA prompt de slide. Esto da consistencia.
@@ -16,7 +22,7 @@ ESTILO VISUAL (aplica a toda la presentación):
 - Mood / estética: <p.ej. editorial minimalista, mucho aire, sombras suaves>
 - Tratamiento de imagen: <p.ej. ilustración isométrica / foto con duotono / 3D mate>
 - Composición: rejilla limpia, márgenes amplios, formato 16:9 horizontal
-- Idioma del texto: español, ortografía perfecta
+- Idioma del texto: <idioma de la presentación>, ortografía perfecta
 ```
 
 ## 2. Prompt por slide (basado en el white frame aprobado)
@@ -40,7 +46,8 @@ Sin marcas de agua. Sin texto de relleno ("lorem ipsum"). Alto contraste y legib
 - **Poco texto por slide.** Cuanto menos texto, más fiable lo renderiza el modelo.
   Frases cortas > párrafos. Idealmente ≤ 20 palabras visibles por slide.
 - **Texto literal entre comillas.** "..." reduce errores de ortografía.
-- **Reitera "ortografía perfecta / texto legible / español"** en cada prompt.
+- **Reitera "ortografía perfecta / texto legible" y el idioma del deck** en cada
+  prompt (p.ej. "ortografía perfecta en francés"). Es lo que evita faltas.
 - **Una idea por slide.** Si un white frame tiene demasiado texto, divídelo.
 - **Mismo aspect_ratio (16:9) y misma resolution (2K) en todas** para uniformidad.
 - Si una slide sale con texto incorrecto, regenera ajustando el prompt (acortar
@@ -54,7 +61,7 @@ Crea una hoja de estilo / design system board en 16:9 para una presentación sob
 ejemplos de tipografía (título y cuerpo) con nombres, 2-3 componentes de ejemplo
 (una tarjeta, un bullet, un gráfico), tratamiento de imagen de referencia y el
 mood general. Estética: <adjetivos: minimalista/corporativo/editorial/tech/...>.
-Etiquetas en español, ortografía perfecta, alta legibilidad.
+Etiquetas en <idioma de la presentación>, ortografía perfecta, alta legibilidad.
 ```
 Tras el OK del usuario, extrae de esa imagen (o de su descripción acordada) el
 **bloque de estilo** del punto 1 y reúsalo en todas las slides.

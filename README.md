@@ -14,7 +14,7 @@ en un único PDF.
 | **Tipo** | Skill de Claude Code |
 | **Salida** | PDF (una imagen por página, 16:9) |
 | **Motor de imagen** | kie.ai · GPT Image 2 (`gpt-image-2-text-to-image`) |
-| **Idioma** | Pensada para español (ortografía perfecta en las slides) |
+| **Idioma** | Cualquier idioma — el deck se genera en el idioma que pidas |
 
 ---
 
@@ -139,6 +139,10 @@ references/
 
 ## Notas y consejos
 
+- **Multiidioma.** La skill funciona en **cualquier idioma**. En el paso 1 se
+  fija el idioma del deck (por defecto, el idioma en que escribes) y se reitera
+  en cada prompt — eso es lo que hace que el texto salga con ortografía perfecta,
+  sea español, inglés, francés, etc.
 - **Poco texto por slide.** Cuanto menos texto, más fiable lo renderiza el
   modelo. Frases cortas y texto entre comillas → mejor ortografía. Ver
   [`references/prompting.md`](references/prompting.md).

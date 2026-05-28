@@ -32,8 +32,11 @@ decks/<nombre>/
 ---
 
 ## PASO 1 — El usuario explica el contenido
-Conversa para entender: tema, objetivo, audiencia, número aproximado de slides,
-tono y cualquier dato/cifra/mensaje clave. Si falta algo esencial, pregunta.
+Conversa para entender: tema, objetivo, audiencia, **idioma de la presentación**,
+número aproximado de slides, tono y cualquier dato/cifra/mensaje clave. Si falta
+algo esencial, pregunta. Si el usuario no indica idioma, usa el idioma en el que
+te escribe (y confírmalo). La skill funciona en **cualquier idioma**: el idioma
+elegido se fija en el bloque de estilo y se reitera en cada prompt.
 Resume el contenido en un **outline** numerado de slides (título + idea de cada
 una) y confírmalo con el usuario antes de seguir.
 
@@ -77,7 +80,7 @@ Cuando apruebe, destila de la imagen/acuerdo el **bloque de estilo** reutilizabl
 Para cada white frame aprobado, redacta un prompt que combine: el **bloque de
 estilo** + el layout y los **textos literales** de ese frame (sigue
 `references/prompting.md` §2 — texto entre comillas, poco texto, "ortografía
-perfecta en español", 16:9). Guarda cada prompt en `prompts/slide-NN.txt`.
+perfecta en <idioma del deck>", 16:9). Guarda cada prompt en `prompts/slide-NN.txt`.
 
 Genera cada slide (numera con cero a la izquierda para que el orden alfabético
 sea correcto: `slide-01.png`, `slide-02.png`, ...):
