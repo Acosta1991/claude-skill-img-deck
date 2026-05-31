@@ -46,16 +46,29 @@ una `<section class="slide">` por slide del outline, con el texto propuesto y
 notas `[[entre corchetes]]` indicando qué frase va en cada zona y dónde van las
 imágenes. Todo es editable (texto, tamaños, posición vía estilos inline).
 
-La plantilla trae un **editor visual integrado**: el usuario abre el HTML en
-**Chrome** (`open decks/<nombre>/white-frames.html`) y edita directamente sobre
-las slides —clic para cambiar texto, ✛ para mover, ◢ para redimensionar, A+/A−
-para el tamaño de letra, "+ Duplicar slide", "Borrar slide", "Borrar bloque"; con
-"Vista limpia" oculta los controles para previsualizar y "✎ Volver a editar"
-(botón flotante arriba a la derecha) regresa al modo edición— y pulsa **Guardar**
-(usa la File System Access API de Chrome para sobrescribir el archivo; en otros
-navegadores descarga el HTML para reemplazarlo a mano). Pídele que guarde sobre
-`decks/<nombre>/white-frames.html` y, cuando lo haga, **vuelve a leer el archivo**
-para extraer los textos/posiciones actualizados al redactar los prompts.
+La plantilla trae un **editor visual integrado**: el usuario edita directamente
+sobre las slides —clic para cambiar texto, ✛ para mover, ◢ para redimensionar,
+A+/A− para el tamaño de letra, "+ Duplicar slide", "Borrar slide", "Borrar
+bloque"; con "Vista limpia" oculta los controles para previsualizar y "✎ Volver a
+editar" (botón flotante arriba a la derecha) regresa al modo edición— y pulsa
+**Guardar**.
+
+**Para que "Guardar" sobrescriba el mismo archivo (recomendado, funciona en
+cualquier navegador, incluido Safari)** lanza el editor local:
+```
+python3 scripts/edit_server.py decks/<nombre>/white-frames.html
+```
+y dile al usuario que abra la URL `http://127.0.0.1:8765` que imprime. Al guardar,
+el servidor sobrescribe `white-frames.html` en disco (sin descargas ni diálogos).
+Déjalo corriendo en segundo plano mientras edita; ciérralo (Ctrl+C / matar el
+proceso) cuando termine. *Alternativa solo Chrome/Edge:* `open
+decks/<nombre>/white-frames.html` (usa la File System Access API). En Safari o
+Firefox con `file://`, "Guardar" solo puede descargar una copia — por eso se usa
+el editor local.
+
+Pídele que guarde sobre `decks/<nombre>/white-frames.html` y, cuando lo haga,
+**vuelve a leer el archivo** para extraer los textos/posiciones actualizados al
+redactar los prompts.
 
 Para un preview en imagen (Chrome headless con perfil aislado):
 `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --user-data-dir="$(mktemp -d)" --hide-scrollbars --window-size=1344,3900 --screenshot=preview.png "file://.../white-frames.html"`

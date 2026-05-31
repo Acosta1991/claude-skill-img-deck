@@ -26,9 +26,12 @@ gasten créditos generando slides hasta que el diseño esté aprobado:
 1. **Cuentas el contenido.** Conversas con Claude sobre tema, objetivo,
    audiencia, nº de slides y mensajes clave. Claude resume todo en un *outline*.
 2. **White frames editables.** Claude crea un HTML con un *wireframe* por slide.
-   Trae un **editor visual integrado**: lo abres en Chrome y editas directamente
-   sobre las diapositivas (clic para escribir, arrastrar para mover/redimensionar,
-   duplicar o borrar slides) y guardas. *(puerta de aprobación)*
+   Trae un **editor visual integrado**: lo abres en el navegador y editas
+   directamente sobre las diapositivas (clic para escribir, arrastrar para
+   mover/redimensionar, duplicar o borrar slides) y guardas. Para que **"Guardar"
+   sobrescriba el mismo archivo en cualquier navegador (incluido Safari)**, Claude
+   lo sirve con un editor local (`scripts/edit_server.py`) y abres
+   `http://127.0.0.1:8765`. *(puerta de aprobación)*
 3. **Sistema de diseño.** Claude genera **una sola imagen** tipo "design system
    board" (paleta, tipografía, componentes, mood). La apruebas o pides cambios.
    *(puerta de aprobación)*
@@ -109,6 +112,10 @@ python3 scripts/kie_image.py \
   --aspect-ratio 16:9 --resolution 2K \
   --out decks/<nombre>/slides/slide-01.png
 
+# Editar los white frames y que "Guardar" sobrescriba el mismo archivo
+# (cualquier navegador, incl. Safari). Abre http://127.0.0.1:8765
+python3 scripts/edit_server.py decks/<nombre>/white-frames.html
+
 # Previsualizar los white frames como PNG (requiere Playwright)
 python3 scripts/render_frame.py --html decks/<nombre>/white-frames.html --outdir frames/
 
@@ -130,6 +137,7 @@ scripts/
   kie_image.py           # genera una imagen con kie.ai (solo stdlib de Python)
   build_pdf.py           # monta las imágenes en un PDF (Pillow)
   render_frame.py        # previsualiza wireframes a PNG (Playwright, opcional)
+  edit_server.py         # editor local: "Guardar" sobrescribe el HTML (stdlib)
 references/
   kie-api.md             # referencia de la API de kie.ai
   prompting.md           # técnicas de prompt para texto legible y estilo coherente

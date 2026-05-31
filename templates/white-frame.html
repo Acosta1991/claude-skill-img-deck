@@ -4,10 +4,19 @@
 <meta charset="UTF-8">
 <title>White frames — propuesta de slides</title>
 <!--
-  WHITE FRAMES con EDITOR VISUAL. Ábrelo en Chrome y edita sobre las slides:
+  WHITE FRAMES con EDITOR VISUAL. Edita directamente sobre las slides:
   · Clic en un texto para escribir.   · Arrastra ✛ (arriba-izq) para mover.
   · Tira de ◢ (abajo-der) para redimensionar.   · A+ / A− cambian el tamaño de letra.
   · "Guardar" sobrescribe este archivo.   · "Borrar slide" elimina la slide activa.
+
+  CÓMO ABRIRLO para que "Guardar" sobrescriba el archivo de verdad:
+  · Recomendado (cualquier navegador, incl. Safari/Firefox):
+      python3 scripts/edit_server.py decks/<nombre>/white-frames.html
+    y abre la URL http://127.0.0.1:8765 que imprime.
+  · Alternativa solo Chrome/Edge: ábrelo con file:// (open white-frames.html);
+    al guardar usa la File System Access API.
+  · Si lo abres con file:// en Safari/Firefox, "Guardar" solo puede DESCARGAR
+    una copia (esos navegadores no pueden escribir sobre el archivo local).
   · "Vista limpia" oculta los controles; pulsa "✎ Volver a editar" para regresar.
   Las zonas a rayas = imágenes generadas por IA. Las notas [[en rojo]] son guía
   y NO se imprimen en la versión final. Duplica una <section class="slide"> (o usa
@@ -227,18 +236,43 @@
 
   document.getElementById("ed-save").onclick = async () => {
     const html = cleanHTML();
-    try {
-      if (!fileHandle) {
-        fileHandle = await window.showSaveFilePicker({ suggestedName: "white-frames.html", types: [{ description: "HTML", accept: { "text/html": [".html"] } }] });
+
+    // 1) Servido por el editor local (scripts/edit_server.py) → funciona en
+    //    CUALQUIER navegador, incluido Safari. PUT que sobrescribe el MISMO
+    //    archivo en disco, sin descargas ni diálogos.
+    if (location.protocol === "http:" || location.protocol === "https:") {
+      try {
+        const res = await fetch(location.pathname, {
+          method: "PUT", headers: { "Content-Type": "text/html" }, body: html,
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        toast("Guardado ✓ (sobrescrito)");
+      } catch (err) {
+        toast("No se pudo guardar en el servidor: " + (err && err.message));
       }
-      const w = await fileHandle.createWritable(); await w.write(html); await w.close();
-      toast("Guardado ✓ (sobrescrito)");
-    } catch (err) {
-      if (err && err.name === "AbortError") return;
-      const blob = new Blob([html], { type: "text/html" });
-      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "white-frames.html"; a.click();
-      toast("Descargado (reemplaza el archivo manualmente)");
+      return;
     }
+
+    // 2) file:// en Chrome/Edge → File System Access API, sobrescribe en sitio.
+    if (window.showSaveFilePicker) {
+      try {
+        if (!fileHandle) {
+          fileHandle = await window.showSaveFilePicker({ suggestedName: "white-frames.html", types: [{ description: "HTML", accept: { "text/html": [".html"] } }] });
+        }
+        const w = await fileHandle.createWritable(); await w.write(html); await w.close();
+        toast("Guardado ✓ (sobrescrito)");
+        return;
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+        // si falla, cae al fallback de descarga de abajo
+      }
+    }
+
+    // 3) Último recurso (Safari/Firefox abierto con file://): descarga manual.
+    //    Para sobrescribir directo, abre el editor con: python3 scripts/edit_server.py
+    const blob = new Blob([html], { type: "text/html" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "white-frames.html"; a.click();
+    toast("Descargado. Para sobrescribir directo usa el editor local (edit_server.py).");
   };
 })();
 </script>
